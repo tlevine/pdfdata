@@ -22,10 +22,12 @@ def main():
     args = argparser.parse_args()
     for filename in args.files:
         try:
-            json.dump(pdfdata(filename), sys.stdout)
-        except:
-            sys.stderr.write('Error at %s\n' % filename)
-        else:
-            sys.stdout.write('\n')
+            sys.stdout.write(json.dumps(pdfdata(filename)) + '\n')
+        except KeyboardInterrupt:
+            break
+        except BrokenPipeError:
+            break
+        except Exception as error:
+            sys.stderr.write('Error at %s: %s\n' % (filename, error))
 
 main()
