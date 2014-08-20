@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if test $# -eq 0; then
+  echo "USAGE: $0 [pdf file] ..."
+fi
+
+while test $# -gt 0; do
+  filename="$1"
+  printf "$filename\t"
+  pdfinfo "$filename" |
+    cut -d: -f 2|sed 's/^ *//'|tr '\n' '\t'
+  echo
+  shift
+done
