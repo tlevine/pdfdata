@@ -21,7 +21,11 @@ def pdfdata(filename):
 def main():
     args = argparser.parse_args()
     for filename in args.files:
-        json.dump(pdfdata(filename), sys.stdout)
-        sys.stdout.write('\n')
+        try:
+            json.dump(pdfdata(filename), sys.stdout)
+        except:
+            sys.stderr.write('Error at %s\n' % filename)
+        else:
+            sys.stdout.write('\n')
 
 main()
