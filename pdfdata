@@ -1,10 +1,16 @@
 #!/bin/sh
 set -e
 
-if test $# -eq 0; then
+# Explain usage if no files are given.
+if test $# -eq 0 || ! test -f "$1"; then
   echo "USAGE: $0 [pdf file] ..."
+  exit 1
 fi
 
+# Header
+printf 'Title\tAuthor\tCreator\tProducer\tCreationDate\tModDate\tTagged\tUserProperties\tSuspects\tForm\tJavaScript\tPages\tEncrypted\tPage size\tPage rot\tFile size\tOptimized\tPDF version\n'
+
+# Body
 while test $# -gt 0; do
   filename="$1"
   printf "$filename\t"
