@@ -1,21 +1,27 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env python3
+import argparse
+import io, subprocess
+import csv
+from collections import OrderedDict
+import json, sys
 
 # Explain usage if no files are given.
-if test $# -eq 0 || ! test -f "$1"; then
-  echo "USAGE: $0 [pdf file] ..."
-  exit 1
-fi
+argparser = argparse.ArgumentParser()
+argparser.add_argument(dest = 'files', metavar = 'pdf-file', nargs = '+')
 
-# Header
-printf 'Title\tAuthor\tCreator\tProducer\tCreationDate\tModDate\tTagged\tUserProperties\tSuspects\tForm\tJavaScript\tPages\tEncrypted\tPage size\tPage rot\tFile size\tOptimized\tPDF version\n'
+def pdfdata(filename):
+    '''
+    Here's an example. ::
 
-# Body
-while test $# -gt 0; do
-  filename="$1"
-  printf "$filename\t"
-  pdfinfo "$filename" |
-    cut -d: -f 2|sed 's/^ *//'|tr '\n' '\t'
-  echo
-  shift
-done
+        print(pdfdata('/home/tlevine/git/muckrock/foia_files/Todd_Feathers.pdf'))
+    '''
+    fp = io.StringIO(subprocess.getoutput("pdfinfo '%s'|sed 's/: */\t/'" % filename))
+    return OrderedDict(csv.reader(fp, delimiter = '\t'))
+
+def main():
+    args = argparser.parse_args()
+    for filename in args.files:
+        json.dump(pdfdata(filename), sys.stdout)
+        sys.stdout.write('\n')
+
+main()
