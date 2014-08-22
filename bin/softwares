@@ -1,7 +1,42 @@
 #!/usr/bin/env python3
-import json, sys)
+import json
+import sys
+import csv
 
-keys = set()
-for line in open(sys.stdin):
-    keys = keys.union(json.loads(line).keys())
-print(keys)
+pdfdata = map(json.loads, sys.stdin)
+
+def check_keys():
+    keys = set()
+    for datum in pdfdata:
+        keys = keys.union(datum.keys())
+    return keys
+
+def main():
+    fieldnames = [
+        'Author',
+        'Creator',
+        'Producer',
+        'Title',
+        'Subject', 
+        'CreationDate',
+        'ModDate',
+        'Tagged',
+        'Keywords',
+        'UserProperties',
+        'Suspects',
+        'Form',
+        'JavaScript',
+        'Pages',
+        'Optimized',
+        'Encrypted',
+        'Page size',
+        'Page rot',
+        'File size',
+        'Optimized',
+        'PDF version',
+    ]
+    writer = csv.DictWriter(sys.stdout, fieldnames = fieldnames)
+    for row in pdfdata:
+        writer.writerow(row)
+
+main()
