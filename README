@@ -1,1 +1,3 @@
 What infos are in a bunch of PDF files?
+
+./bin/pdfdata [files]... | ./bin/tocsv
