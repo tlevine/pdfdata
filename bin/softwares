@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+import json, sys)
+
+keys = set()
+for line in open(sys.stdin):
+    keys = keys.union(json.loads(line).keys())
+print(keys)
