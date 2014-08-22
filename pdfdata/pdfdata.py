@@ -30,7 +30,5 @@ def main():
         except Exception as error:
             sys.stderr.write('Error at %s: %s\n' % (filename, error))
 
-main()
-
 # Issues
 # * \x00
